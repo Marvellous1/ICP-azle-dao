@@ -1,0 +1,42 @@
+type Dao = record {
+  id : text;
+  members : vec principal;
+  owner : principal;
+  name : text;
+  createdAt : nat64;
+  updatedAt : opt nat64;
+  short_desc : text;
+};
+type DaoPayload = record { name : text; short_desc : text; avatar : text };
+type EditProposalPayload = record { id : text; title : text; details : text };
+type Proposal = record {
+  id : text;
+  title : text;
+  owner : principal;
+  votes : vec principal;
+  createdAt : nat64;
+  updatedAt : opt nat64;
+  details : text;
+  daoId : text;
+};
+type ProposalPayload = record { title : text; details : text; daoId : text };
+type _AzleResult = variant { Ok : Dao; Err : text };
+type _AzleResult_1 = variant { Ok : Proposal; Err : text };
+type _AzleResult_2 = variant { Ok : vec Dao; Err : text };
+type _AzleResult_3 = variant { Ok : vec Proposal; Err : text };
+type _AzleResult_4 = variant { Ok : float64; Err : text };
+service : () -> {
+  addMembersToDao : (text, principal) -> (_AzleResult);
+  createDao : (DaoPayload) -> (_AzleResult);
+  createProposal : (ProposalPayload) -> (_AzleResult_1);
+  deleteDao : (text) -> (_AzleResult);
+  deleteProposal : (text) -> (_AzleResult_1);
+  editProposal : (EditProposalPayload) -> (_AzleResult_1);
+  getDao : (text) -> (_AzleResult) query;
+  getDaosForUser : () -> (_AzleResult_2) query;
+  getProposal : (text, text) -> (_AzleResult_1) query;
+  getProposalsForDao : (text) -> (_AzleResult_3) query;
+  getVotesForProposal : (text, text) -> (_AzleResult_4) query;
+  updateDao : (text, DaoPayload) -> (_AzleResult);
+  voteOnProposal : (text, text) -> (_AzleResult_1);
+}
